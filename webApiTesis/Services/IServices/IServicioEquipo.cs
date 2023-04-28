@@ -15,5 +15,7 @@ namespace webApiTesis.Services.IServices
         Task<ComandoEquipo> GetEquipoByID(int id);
         Task<List<Equipo>> GetEquipoByIDGenero(int idGenero);
 
+        Task<List<DTOEquiposJugador>> GetEquiposjugador(int idjugador); //dtoequiposjugador
+
     }
 }

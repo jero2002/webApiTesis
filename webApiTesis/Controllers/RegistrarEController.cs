@@ -85,6 +85,12 @@ namespace webApiTesis.Controllers
             return Ok(await this.servicio.GetEquipoByIDGenero(idGenero));
         }
 
+        [HttpGet("GetEquiposjugador/{idjugador}")]
+        public async Task<IActionResult> GetEquiposjugador(int idjugador)
+        {
+            return Ok(await this.servicio.GetEquiposjugador(idjugador));
+        }
+
 
     }
 }

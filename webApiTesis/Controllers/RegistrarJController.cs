@@ -88,6 +88,19 @@ namespace webApiTesis.Controllers
             return Ok(await this.servicio.GetJugadorByIDGenero(idGenero));
         }
 
+        [HttpGet("GetJugadoresequipo/{idequipo}")]
+        public async Task<IActionResult> GetJugadoresequipo(int idequipo)
+        {
+            return Ok(await this.servicio.GetJugadoresequipo(idequipo));
+        }
+
+        [HttpDelete]
+        [Route("DeleteEquipoJugador/{id}")]
+        public async Task<ActionResult<ResultadoBase>> DeleteEquipoJugador(int id)
+        {
+            return Ok(await this.servicio.DeleteEquipoJugador(id));
+        }
+
 
 
     }

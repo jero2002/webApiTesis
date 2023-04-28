@@ -17,6 +17,7 @@ builder.Services.AddScoped<IServicioLogin, ServicioLogin>();
 builder.Services.AddScoped<IServicioEquipo, ServicioEquipo>();
 builder.Services.AddScoped<IServicioJugador, ServicioJugador>();
 builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+builder.Services.AddScoped<IServicioReportes, ServicioReportes>();
 
 
 builder.Services.AddAuthentication(options =>

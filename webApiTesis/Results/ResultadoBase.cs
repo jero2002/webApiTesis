@@ -7,5 +7,6 @@
         public string Error { get; set; }
         public int CodigoEstado { set; get; }
         public dynamic Resultado { get; set; }
+        public dynamic respondeme { get; set; }
     }
 }

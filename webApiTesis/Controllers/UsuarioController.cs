@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using webApiTesis.DTOs;
+using webApiTesis.Models;
+using webApiTesis.Results;
 using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
@@ -23,6 +26,17 @@ namespace webApiTesis.Controllers
         public async Task<IActionResult> GetUsuarioByID(int id)
         {
             return Ok(await _servicioUsuarios.GetUsuarioByID(id));
+        }
+
+        [HttpPut("PutUsuario")]
+        public async Task<ActionResult<ResultadoBase>> PutUsuario([FromBody] DTOUsuarioUpdate usuario)
+        {
+            if (usuario == null)
+            {
+                return BadRequest("El objeto usuario está vacío");
+            }
+
+            return Ok(await this._servicioUsuarios.PutUsuario(usuario));
         }
 
 

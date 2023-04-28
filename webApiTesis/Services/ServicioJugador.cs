@@ -32,7 +32,8 @@ namespace webApiTesis.Services
 
                 Jugadore jugadorGuardado = await context.Jugadores.FindAsync(e.IdJugador);
 
-                Usuario usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == _securityService.GetUserId());
+                int userId = _securityService.GetUserId();
+                Usuario usuario = await context.Usuarios.FindAsync(userId);
 
                 usuario.IdJugador = jugadorGuardado.IdJugador;
                 await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
@@ -171,6 +172,49 @@ namespace webApiTesis.Services
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<List<DTOJugadoresEquipo>> GetJugadoresequipo(int idequipo)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+
+            var jugadores = await context.EquiposJugadores
+                .Where(x => x.IdEquipo == idequipo) // Filtras por el idJugador
+                .Select(x => new DTOJugadoresEquipo
+                {
+                    idEquipoJugador = x.IdEquipoJugador,
+                    Nombre = x.IdJugadorNavigation.Nombre,
+                    Edad = x.IdJugadorNavigation.Edad,
+                    Celular = x.IdJugadorNavigation.Celular,
+                    Posicion = x.IdJugadorNavigation.IdPosicionNavigation.Nombre
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            return jugadores;
+        }
+
+        public async Task<ResultadoBase> DeleteEquipoJugador(int id)
+        {
+            ResultadoBase resultado = new ResultadoBase();
+            var equiposJugadore = await context.EquiposJugadores.Where(c => c.IdEquipoJugador.Equals(id)).FirstOrDefaultAsync();
+            if (equiposJugadore != null)
+            {
+                context.EquiposJugadores.Remove(equiposJugadore); // Elimina el registro
+                await context.SaveChangesAsync(); // Guarda los cambios en la base de datos
+                resultado.Ok = true;
+                resultado.CodigoEstado = 200;
+                resultado.Message = "Eliminaste exitosamente";
+            }
+            else
+            {
+                resultado.Ok = false;
+                resultado.CodigoEstado = 400;
+                resultado.Message = "Error al eliminar";
+                return resultado;
+            }
+
+            return resultado;
         }
 
 

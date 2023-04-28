@@ -24,6 +24,7 @@ namespace webApiTesis.Services
 
         public async Task<ResultadoBase> PostEquipo(Equipo e)
         {
+            
             ResultadoBase resultado = new ResultadoBase();
             try
             {
@@ -32,16 +33,20 @@ namespace webApiTesis.Services
 
                 Equipo equipoGuardado = await context.Equipos.FindAsync(e.IdEquipo);
 
-                Usuario usuario = await context.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == _securityService.GetUserId());
+                int userId = _securityService.GetUserId();
+                Usuario usuario = await context.Usuarios.FindAsync(userId);
+
 
                 usuario.IdEquipo = equipoGuardado.IdEquipo;
-                await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+                var  respondeme =  await context.SaveChangesAsync(_securityService.GetUserName() ?? Constantes.DefaultSecurityValues.DefaultUserName);
+
 
                 return new ResultadoBase
                 {
                     Ok = true,
                     CodigoEstado = 200,
-                    Message = "El Equipo se guardó exitosamente."
+                    Message = "El Equipo se guardó exitosamente.",
+                    respondeme = respondeme
                 };
             }
             catch (Exception)
@@ -170,6 +175,30 @@ namespace webApiTesis.Services
 
             return await query.ToListAsync();
         }
+
+
+        public async Task<List<DTOEquiposJugador>> GetEquiposjugador(int idjugador) //dtoequiposjugador
+        {
+            ResultadoBase resultado = new ResultadoBase();
+
+            var equipos = await context.EquiposJugadores
+                .Where(x => x.IdJugador == idjugador) 
+                .Select(x => new DTOEquiposJugador
+                {
+                    idEquipoJugador = x.IdEquipoJugador,
+                    Nombre = x.IdEquipoNavigation.Nombre,
+                    Celular = x.IdEquipoNavigation.Celular,
+                    TorneoGanado = x.IdEquipoNavigation.TorneoGanado,
+                    Entrenador = x.IdEquipoNavigation.Entrenador,
+                  
+                })
+                .AsNoTracking()
+                .ToListAsync();
+
+            return equipos;
+        }
+
+
 
 
 
