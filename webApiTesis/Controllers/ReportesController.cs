@@ -7,7 +7,7 @@ using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
 {
-   
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ReportesController : ControllerBase
@@ -27,6 +27,13 @@ namespace webApiTesis.Controllers
         {
             var jugadoresPorProvincia = await servicio.GetJugadoresPorProvincia();
             return Ok(jugadoresPorProvincia);
+        }
+
+        [HttpGet("jugadoresporposicion")]
+        public async Task<ActionResult<List<DTOJugadoresXPosicion>>> GetJugadoresPorPosicion()
+        {
+            var jugadoresPorPosicion = await servicio.GetJugadoresPorPosicion();
+            return Ok(jugadoresPorPosicion);
         }
 
     }

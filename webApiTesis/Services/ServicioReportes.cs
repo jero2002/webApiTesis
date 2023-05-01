@@ -28,5 +28,24 @@ namespace webApiTesis.Services
             return jugadoresPorProvincia; 
         }
 
+
+
+        public async Task<List<DTOJugadoresXPosicion>> GetJugadoresPorPosicion()
+        {
+            var jugadoresPorPosicion = await (from jugador in context.Jugadores
+                                              join estado in context.EstadoJugadors on jugador.IdEstadoJ equals estado.IdEstadoJ
+                                              join posicion in context.Posiciones on jugador.IdPosicion equals posicion.IdPosicion
+                                              where estado.IdEstadoJ == 1
+                                              group jugador by posicion.Nombre into g
+                                              select new DTOJugadoresXPosicion
+                                              {
+                                                  Posicion = g.Key,
+                                                  CantidadJugadores = g.Count()
+                                              }).ToListAsync();
+
+            return jugadoresPorPosicion;
+        }
+
+
     }
 }
