@@ -32,6 +32,8 @@ public partial class DreamTeamContext : DbContext
 
     public virtual DbSet<Notificacione> Notificaciones { get; set; }
 
+    public virtual DbSet<NotificacionesEj> NotificacionesEjs { get; set; }
+
     public virtual DbSet<Posicione> Posiciones { get; set; }
 
     public virtual DbSet<Provincia> Provincias { get; set; }
@@ -41,8 +43,6 @@ public partial class DreamTeamContext : DbContext
     public virtual DbSet<TipoNotificacione> TipoNotificaciones { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
-
-    public virtual DbSet<UsuariosNotificacione> UsuariosNotificaciones { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -206,13 +206,51 @@ public partial class DreamTeamContext : DbContext
             entity.ToTable("notificaciones");
 
             entity.Property(e => e.IdNotificacion).HasColumnName("idNotificacion");
-            entity.Property(e => e.Descripcion).HasColumnName("descripcion");
+            entity.Property(e => e.IdEquipo).HasColumnName("idEquipo");
+            entity.Property(e => e.IdJugador).HasColumnName("idJugador");
             entity.Property(e => e.IdTipo).HasColumnName("idTipo");
+
+            entity.HasOne(d => d.IdEquipoNavigation).WithMany(p => p.Notificaciones)
+                .HasForeignKey(d => d.IdEquipo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_idEeequipo");
+
+            entity.HasOne(d => d.IdJugadorNavigation).WithMany(p => p.Notificaciones)
+                .HasForeignKey(d => d.IdJugador)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_idJjjugador");
 
             entity.HasOne(d => d.IdTipoNavigation).WithMany(p => p.Notificaciones)
                 .HasForeignKey(d => d.IdTipo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_idTipo");
+        });
+
+        modelBuilder.Entity<NotificacionesEj>(entity =>
+        {
+            entity.HasKey(e => e.IdNotificacionEj);
+
+            entity.ToTable("notificacionesEJ");
+
+            entity.Property(e => e.IdNotificacionEj).HasColumnName("idNotificacionEJ");
+            entity.Property(e => e.IdEquipo).HasColumnName("idEquipo");
+            entity.Property(e => e.IdJugador).HasColumnName("idJugador");
+            entity.Property(e => e.IdTipo).HasColumnName("idTipo");
+
+            entity.HasOne(d => d.IdEquipoNavigation).WithMany(p => p.NotificacionesEjs)
+                .HasForeignKey(d => d.IdEquipo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_idEeeequipo");
+
+            entity.HasOne(d => d.IdJugadorNavigation).WithMany(p => p.NotificacionesEjs)
+                .HasForeignKey(d => d.IdJugador)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_idJjjjugador");
+
+            entity.HasOne(d => d.IdTipoNavigation).WithMany(p => p.NotificacionesEjs)
+                .HasForeignKey(d => d.IdTipo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_idTtipo");
         });
 
         modelBuilder.Entity<Posicione>(entity =>
@@ -295,37 +333,14 @@ public partial class DreamTeamContext : DbContext
                 .HasConstraintName("FK_idRol");
         });
 
-        modelBuilder.Entity<UsuariosNotificacione>(entity =>
-        {
-            entity.HasKey(e => e.IdUsuarioNotificacion);
-
-            entity.ToTable("usuariosNotificaciones");
-
-            entity.Property(e => e.IdUsuarioNotificacion).HasColumnName("idUsuarioNotificacion");
-            entity.Property(e => e.IdEmisor).HasColumnName("idEmisor");
-            entity.Property(e => e.IdNotificacion).HasColumnName("idNotificacion");
-            entity.Property(e => e.IdReceptor).HasColumnName("idReceptor");
-            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
-
-            entity.HasOne(d => d.IdNotificacionNavigation).WithMany(p => p.UsuariosNotificaciones)
-                .HasForeignKey(d => d.IdNotificacion)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_idNotificacion");
-
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.UsuariosNotificaciones)
-                .HasForeignKey(d => d.IdUsuario)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_idUsuario");
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
 
+
     public async Task<int> SaveChangesAsync(string usuario)
     {
-        // this.AplicarAutidoria(usuario);
+
         return await base.SaveChangesAsync();
     }
-
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

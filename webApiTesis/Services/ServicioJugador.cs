@@ -218,5 +218,40 @@ namespace webApiTesis.Services
         }
 
 
+        public async Task<ResultadoBase> postEquipoJugador(int idjugador, int idequipo)
+        {
+            //estara bien ese exists
+            var exists = await context.EquiposJugadores.AnyAsync(n => n.IdJugador == idjugador && n.IdEquipo == idequipo);
+            ResultadoBase resultado = new ResultadoBase();
+            if (exists)
+            {
+                {
+                    resultado.Ok = false;
+                    resultado.CodigoEstado = 400;
+                    resultado.Message = "No se pudo aceptar la solicitud";
+                    return resultado;
+                };
+            }
+            else
+            {
+                var notification = new EquiposJugadore
+                {
+                    IdJugador = idjugador,
+                    IdEquipo = idequipo,                    
+                };
+
+                await context.EquiposJugadores.AddAsync(notification);
+                await context.SaveChangesAsync();
+
+                {
+                    resultado.Ok = true;
+                    resultado.CodigoEstado = 200;
+                    resultado.Message = "Solicitud Aceptada";
+                    return resultado;
+                };
+            }
+        }
+
+
     }
 }

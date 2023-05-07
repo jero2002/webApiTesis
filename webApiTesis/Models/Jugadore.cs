@@ -33,5 +33,9 @@ public partial class Jugadore
 
     public virtual Provincia IdProvinciaNavigation { get; set; } = null!;
 
+    public virtual ICollection<Notificacione> Notificaciones { get; } = new List<Notificacione>();
+
+    public virtual ICollection<NotificacionesEj> NotificacionesEjs { get; } = new List<NotificacionesEj>();
+
     public virtual ICollection<Usuario> Usuarios { get; } = new List<Usuario>();
 }

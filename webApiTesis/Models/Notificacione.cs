@@ -9,9 +9,13 @@ public partial class Notificacione
 
     public int IdTipo { get; set; }
 
-    public string? Descripcion { get; set; }
+    public int IdJugador { get; set; }
+
+    public int IdEquipo { get; set; }
+
+    public virtual Equipo IdEquipoNavigation { get; set; } = null!;
+
+    public virtual Jugadore IdJugadorNavigation { get; set; } = null!;
 
     public virtual TipoNotificacione IdTipoNavigation { get; set; } = null!;
-
-    public virtual ICollection<UsuariosNotificacione> UsuariosNotificaciones { get; } = new List<UsuariosNotificacione>();
 }

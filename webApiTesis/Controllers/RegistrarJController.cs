@@ -11,7 +11,7 @@ using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
 {
-    [Authorize]
+ 
     [Route("api/[controller]")]
     [ApiController]
     public class RegistrarJController : ControllerBase
@@ -101,6 +101,12 @@ namespace webApiTesis.Controllers
             return Ok(await this.servicio.DeleteEquipoJugador(id));
         }
 
+        [HttpPost("AceptarSolicitud/{idjugador}/{idequipo}")]
+        public async Task<ActionResult<ResultadoBase>> postEquipoJugador(int idjugador, int idequipo)
+        {
+            var resultado = await servicio.postEquipoJugador(idjugador, idequipo);
+            return resultado;
+        }
 
 
     }

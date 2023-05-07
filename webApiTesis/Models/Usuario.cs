@@ -24,6 +24,4 @@ public partial class Usuario
     public virtual Jugadore? IdJugadorNavigation { get; set; }
 
     public virtual Role IdRolNavigation { get; set; } = null!;
-
-    public virtual ICollection<UsuariosNotificacione> UsuariosNotificaciones { get; } = new List<UsuariosNotificacione>();
 }

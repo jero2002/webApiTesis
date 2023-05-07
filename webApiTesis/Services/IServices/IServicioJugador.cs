@@ -17,5 +17,7 @@ namespace webApiTesis.Services.IServices
         Task<List<DTOJugadoresEquipo>> GetJugadoresequipo(int idjugador); //dtojugadoresequipo
         Task<ResultadoBase> DeleteEquipoJugador(int id);
 
+        Task<ResultadoBase> postEquipoJugador(int idjugador, int idequipo);
+
     }
 }
