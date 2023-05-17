@@ -10,7 +10,7 @@ using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
 {
-    [Authorize]
+ 
     [Route("api/[controller]")]
     [ApiController]
     public class RegistrarEController : ControllerBase

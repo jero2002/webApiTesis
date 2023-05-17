@@ -7,7 +7,7 @@ using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class ReportesController : ControllerBase
@@ -35,6 +35,55 @@ namespace webApiTesis.Controllers
             var jugadoresPorPosicion = await servicio.GetJugadoresPorPosicion();
             return Ok(jugadoresPorPosicion);
         }
+
+        [HttpGet("cantidadjugadores")]
+        public async Task<ActionResult<int>> GetCantidadJugadores()
+        {
+                var cantidadJugadores = await servicio.GetCantidadJugadores();
+                return Ok(cantidadJugadores);   
+        }
+
+        [HttpGet("cantidadequipos")]
+        public async Task<ActionResult<int>> GetCantidadEquipos()
+        {
+            var cantidadequipos = await servicio.GetCantidadEquipos();
+            return Ok(cantidadequipos);
+        }
+
+        [HttpGet("EdadPromedioPorIdEquipo/{idEquipo}")]
+        public async Task<double> Get(int idEquipo)
+        {
+            return await servicio.ObtenerEdadPromedioPorIdEquipo(idEquipo);
+        }
+
+        [HttpGet("JugadoresXProvincia/{idEquipo}")]
+        public async Task<ActionResult<List<DTOJugadoresXProvincia>>> GetJugadoresPorProvincia(int idEquipo)
+        {
+            var jugadoresPorProvincia = await servicio.GetJugadoresPorProvincia(idEquipo);
+
+            if (jugadoresPorProvincia == null || !jugadoresPorProvincia.Any())
+            {
+                return BadRequest("No se encontraron datos");
+            }
+
+            return Ok(jugadoresPorProvincia);
+        }
+
+
+        [HttpGet("cantidadEquiposXEstado/{idJugador}")]
+        public async Task<ActionResult<List<DTOEquipoXEstado>>> ObtenerCantidadEquiposPorEstado(int idJugador)
+        {
+            var equiposPorEstado = await servicio.ObtenerCantidadEquiposPorEstado(idJugador);
+
+            if (equiposPorEstado == null || !equiposPorEstado.Any())
+            {
+                return BadRequest("No se encontraron datos");
+            }
+
+            return Ok(equiposPorEstado);
+        }
+
+
 
     }
 }

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webApiTesis.Data;
 using webApiTesis.Results;
 using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
-{   
+{
+   
     [Route("api/[controller]")]
     [ApiController]
     public class NotificacionController : ControllerBase

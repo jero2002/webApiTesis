@@ -11,7 +11,7 @@ using webApiTesis.Services.IServices;
 
 namespace webApiTesis.Controllers
 {
- 
+
     [Route("api/[controller]")]
     [ApiController]
     public class RegistrarJController : ControllerBase
